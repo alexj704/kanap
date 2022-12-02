@@ -3,33 +3,42 @@ const id = new URLSearchParams(document.location.search).get("id")
 
 // Appel pour récupérer les infos du produit
 fetch(`http://127.0.0.1:3000/api/products/${id}`)
-    .then(function (response) {
-        if (response.ok) {
-            return response.json();
-        }
-    })
+    .then(response => response.json()) 
 // Création des éléments du DOM et ajout des infos venant de fetch    
-    .then(function (productItem) {
+    .then(data => {
+// Changement du titre de la page selon le modèle
+        document
+            .querySelector('title')
+            .textContent = `${data.name} - Kanap`
+// Insertion de l'image
         const img = document.createElement('img')
         document
             .querySelector('.item__img')
             .appendChild(img)
-        img.setAttribute('src', `${productItem.imageUrl}`)
-        img.setAttribute('alt', `${productItem.altTxt}`)
+        img.setAttribute('src', `${data.imageUrl}`)
+        img.setAttribute('alt', `${data.altTxt}`)
+// Insertion du nom du produit
         document
             .getElementById("title")
-            .textContent = `${productItem.name}`
+            .textContent = `${data.name}`
+// Insertion du prix du produit
         document
             .getElementById("price")
-            .textContent = `${productItem.price}`
+            .textContent = `${data.price}`
+// Insertion de la description du produit
         document
             .getElementById("description")
-            .textContent = `${productItem.description}`
-
+            .textContent = `${data.description}`
+// Insertion des couleurs du produit
+        for (let color of data.colors) {
+            const colors = document.getElementById("colors")
+            const option = document.createElement('option')
+            colors.appendChild(option)
+            option.value = color
+            option.textContent = color
+        }
     })
-    .catch(function (error) {
-        console.error("Erreur")
-    })
+    .catch( error => {console.error(error)})
 
     
 

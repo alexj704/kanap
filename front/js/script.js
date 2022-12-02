@@ -1,25 +1,29 @@
 // Récupation des infos produits grâce à l'API
 fetch("http://127.0.0.1:3000/api/products")
-    .then(function (res) {
-        if (res.ok) {
-            return res.json()
-        }
-    })
+    .then(response => response.json())
 // Ajout des items contenant les infos produit sur la page d'acceuil    
-    .then(function (products) {
+    .then(products => {
+        const items = document.getElementById('items')
         for (let product of products) {
-            const a = document.createElement('a')
-            const productUrl = `./product.html?id=${product.id}`
-            document
-                .getElementById('items')
-                .appendChild(a)
-                .appendChild(document.createElement('article'))
-                .innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">
-                      <h3 class="productName">${product.name}</h3>
-                      <p class="productDescription">${product.description}</p>`
-            a.setAttribute('href', `./product.html?id=${product._id}`)
+// Ajout du lien pour accèder au produit
+            const link = document.createElement('a')
+            items.appendChild(link).setAttribute('href', `./product.html?id=${product._id}`)
+// Création de la balise article
+            const article = document.createElement('article')
+            link.appendChild(article)
+// Ajout de l'image du produit
+            const image = document.createElement('img')
+            article.appendChild(image)
+            image.src = product.imageUrl
+            image.alt = product.altTxt
+// Ajout du nom du produit
+            const name = document.createElement('h3')
+            article.appendChild(name).setAttribute('class', 'productName')
+            name.textContent = product.name
+// Ajout de la description du produit
+            const description = document.createElement('p')
+            article.appendChild(description).setAttribute('class', 'productDescription')
+            description.textContent = product.description
         }
     })
-    .catch(function (error) {
-        console.error("Une erreur est survenue")
-    })
+    .catch(error => { console.error(error) })
