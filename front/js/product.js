@@ -40,6 +40,47 @@ fetch(`http://127.0.0.1:3000/api/products/${id}`)
     })
     .catch( error => {console.error(error)})
 
+// Ajout au panier
+
+// Ajout du listener sur le bouton "Ajouter au panier"
+
+const addToCart = document.querySelector("#addToCart")
+addToCart.addEventListener("click", function (event){
+    event.preventDefault()
+    const productOptions = {
+        productId: id,
+        color: document.querySelector("#colors").value,
+        quantity: Number(document.querySelector("#quantity").value),
+    }
+    addLocalStorage(productOptions)
+})
+
+// Fonction de l'ajout du panier au localStorage
+
+function addLocalStorage(productOptions) {
+
+// On regarde si on a déjà un panier dans le localStorage, si oui on regarde si le produit qu'on veut ajouter n'y
+// est pas déjà(même ID, même couleur) auquel cas on ajuste la quantité, sinon on ajoute le produit.
+
+    let inLocalStorage = JSON.parse(window.localStorage.getItem("Products"))
+    if (inLocalStorage === null) {
+        inLocalStorage = []
+        inLocalStorage.push(productOptions)
+        window.localStorage.setItem("Products", JSON.stringify(inLocalStorage))
+    }
+    else {
+        const found = inLocalStorage.find(element => element.productId == productOptions.productId && element.color == productOptions.color)
+        if (found == undefined) {
+            inLocalStorage.push(productOptions)
+            window.localStorage.setItem("Products", JSON.stringify(inLocalStorage))
+        }
+        else {
+            found.quantity += productOptions.quantity
+            window.localStorage.setItem("Products", JSON.stringify(inLocalStorage))
+        }
+    }
+}
+
     
 
 
