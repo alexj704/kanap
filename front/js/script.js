@@ -1,5 +1,5 @@
 // Récupation des infos produits grâce à l'API
-fetch("http://127.0.0.1:3000/api/products")
+fetch("http://localhost:3000/api/products")
     .then(response => response.json())
 // Ajout des items contenant les infos produit sur la page d'acceuil    
     .then(products => {

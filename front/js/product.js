@@ -2,7 +2,7 @@
 const id = new URLSearchParams(document.location.search).get("id")
 
 // Appel pour récupérer les infos du produit
-fetch(`http://127.0.0.1:3000/api/products/${id}`)
+fetch(`http://localhost:3000/api/products/${id}`)
     .then(response => response.json()) 
 // Création des éléments du DOM et ajout des infos venant de fetch    
     .then(data => {
@@ -42,7 +42,7 @@ fetch(`http://127.0.0.1:3000/api/products/${id}`)
 
 // Ajout au panier
 
-// Ajout du listener sur le bouton "Ajouter au panier"
+// Ajout du listener sur le bouton "Ajouter au panier", si la quantité ou la couleur n'est pas choisie alors un message d'erreur s'affiche
 
 const addToCart = document.querySelector("#addToCart")
 addToCart.addEventListener("click", function (event){
@@ -52,7 +52,12 @@ addToCart.addEventListener("click", function (event){
         color: document.querySelector("#colors").value,
         quantity: Number(document.querySelector("#quantity").value),
     }
+    if ((productOptions.quantity < 1 || productOptions.quantity > 100) || productOptions.color === "") {
+        window.alert("Veuillez choisir une couleur et entrer une quantité entre 1 et 100")
+    }
+    else {
     addLocalStorage(productOptions)
+    }
 })
 
 // Fonction de l'ajout du panier au localStorage
