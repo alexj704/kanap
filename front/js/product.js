@@ -57,7 +57,10 @@ addToCart.addEventListener("click", function (event){
     }
     else {
     addLocalStorage(productOptions)
+    addToCart.textContent = "Produit ajouté"
+    setTimeout(function () { addToCart.textContent = "Ajouter au panier" }, 1500)
     }
+
 })
 
 // Fonction de l'ajout du panier au localStorage

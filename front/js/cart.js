@@ -1,5 +1,13 @@
+// Récupération du panier dans le localStorage
+
 let inLocalStorage = JSON.parse(window.localStorage.getItem("Products"))
 
+// On crée les variables pour la somme du panier et le nombre total de produits
+
+let sumCart = 0
+let totalQuantity = 0
+
+// Si le panier est vide, alors on affiche "Votre panier est vide"
 
 if (inLocalStorage == null) {
     const article = document.getElementById('cart__items').appendChild(document.createElement('article'))
@@ -8,6 +16,9 @@ if (inLocalStorage == null) {
     emptyCart.innerText = "Votre panier est vide"
 
 }
+
+// Sinon on affiche les produits dynamiquement
+
 else {
     for (let product of inLocalStorage) {
         fetch(`http://localhost:3000/api/products/${product.productId}`)
@@ -22,7 +33,7 @@ else {
                   <div class="cart__item__content__description">
                     <h2>${data.name}</h2>
                     <p>${product.color}</p>
-                    <p>${data.price} €</p>
+                    <p>${data.price} € / unité</p>
                   </div>
                   <div class="cart__item__content__settings">
                     <div class="cart__item__content__settings__quantity">
@@ -35,8 +46,17 @@ else {
                   </div>
                 </div>
               </article>`
+
+// On calcul et on affiche le prix total du panier et le nombre d'articles
+
+            sumCart = sumCart + (product.quantity * data.price)
+            totalQuantity = totalQuantity + product.quantity
+            document.getElementById('totalQuantity').textContent = `${totalQuantity}`
+            document.getElementById('totalPrice').textContent = `${sumCart}`
             })
             .catch(error => { console.error(error) })
-
     }
 }
+
+
+
