@@ -10,22 +10,22 @@ let totalQuantity = 0
 // Si le panier est vide, alors on affiche "Votre panier est vide"
 
 if (inLocalStorage == null) {
-    const article = document.getElementById('cart__items').appendChild(document.createElement('article'))
-    const emptyCart = article.appendChild(document.createElement('p'))
-    emptyCart.style = "text-align:center"
-    emptyCart.innerText = "Votre panier est vide"
+  const article = document.getElementById('cart__items').appendChild(document.createElement('article'))
+  const emptyCart = article.appendChild(document.createElement('p'))
+  emptyCart.style = "text-align:center"
+  emptyCart.innerText = "Votre panier est vide"
 
 }
 
 // Sinon on affiche les produits dynamiquement
 
 else {
-    for (let product of inLocalStorage) {
-        fetch(`http://localhost:3000/api/products/${product.productId}`)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('cart__items').innerHTML +=
-            `<article class="cart__item" data-id="${product.id}" data-color="${product.color}">
+  for (let product of inLocalStorage) {
+    fetch(`http://localhost:3000/api/products/${product.productId}`)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('cart__items').innerHTML +=
+          `<article class="cart__item" data-id="${product.id}" data-color="${product.color}">
                 <div class="cart__item__img">
                   <img src="${data.imageUrl}" alt="${data.altTxt}">
                 </div>
@@ -47,16 +47,25 @@ else {
                 </div>
               </article>`
 
-// On calcul et on affiche le prix total du panier et le nombre d'articles
+        // On calcul et on affiche le prix total du panier et le nombre d'articles
 
-            sumCart = sumCart + (product.quantity * data.price)
-            totalQuantity = totalQuantity + product.quantity
-            document.getElementById('totalQuantity').textContent = `${totalQuantity}`
-            document.getElementById('totalPrice').textContent = `${sumCart}`
-            })
-            .catch(error => { console.error(error) })
-    }
+        sumCart = sumCart + (product.quantity * data.price)
+        totalQuantity = totalQuantity + product.quantity
+        document.getElementById('totalQuantity').textContent = `${totalQuantity}`
+        document.getElementById('totalPrice').textContent = `${sumCart}`
+
+        
+        let inputs = document.querySelectorAll('.itemQuantity')
+        for (let input of inputs) {
+          input.addEventListener('change', function (event) {
+            product.quantity = event.target.value
+            console.log(product.quantity)
+          })
+        }
+      })
+
+      .catch(error => { console.error(error) })
+  }
 }
-
 
 

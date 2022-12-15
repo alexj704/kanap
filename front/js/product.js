@@ -57,8 +57,7 @@ addToCart.addEventListener("click", function (event){
     }
     else {
     addLocalStorage(productOptions)
-    addToCart.textContent = "Produit ajouté"
-    setTimeout(function () { addToCart.textContent = "Ajouter au panier" }, 1500)
+
     }
 
 })
@@ -75,20 +74,35 @@ function addLocalStorage(productOptions) {
         inLocalStorage = []
         inLocalStorage.push(productOptions)
         window.localStorage.setItem("Products", JSON.stringify(inLocalStorage))
+        productAdd()
     }
     else {
         const found = inLocalStorage.find(element => element.productId == productOptions.productId && element.color == productOptions.color)
         if (found == undefined) {
             inLocalStorage.push(productOptions)
             window.localStorage.setItem("Products", JSON.stringify(inLocalStorage))
+            productAdd()
+
         }
         else {
             found.quantity += productOptions.quantity
-            window.localStorage.setItem("Products", JSON.stringify(inLocalStorage))
+            if (found.quantity <= 100) {
+                window.localStorage.setItem("Products", JSON.stringify(inLocalStorage))
+                productAdd()
+            }
+                else {
+                    window.alert("Vous ne pouvez pas prendre plus de 100 produits")
+                }
         }
     }
 }
 
-    
+// Fonction qui permet de changer le texte "Ajouter un produit" en "Produit ajouté"
+//  quand on ajoute un produit au panier.
+
+function productAdd () {
+    addToCart.textContent = "Produit ajouté"
+    setTimeout(function () { addToCart.textContent = "Ajouter au panier" }, 1500)
+}
 
 
