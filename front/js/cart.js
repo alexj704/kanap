@@ -211,9 +211,11 @@ form.email.addEventListener('input', function () {
 // On surveille la soumission du formulaire
 form.addEventListener('submit', event => {
   event.preventDefault()
+// Si le panier est vide, on signale l'erreur
   if (inLocalStorage==null || inLocalStorage.length <1) {
     alert("Vous devez remplir le panier")
   }
+// Sinon on vérifie si les champs sont correctement remplis
   else if (validNameOrCity(form.firstName)&&validNameOrCity(form.lastName)&&validAddress(form.address)&&validNameOrCity(form.city)&&validMail(form.email)) {
     let contact = {
       firstName: form.firstName.value,
@@ -223,7 +225,7 @@ form.addEventListener('submit', event => {
       email: form.email.value
     }
     let products = inLocalStorage.map(product => product.productId)
-    console.log(products)
+// On envoie la commande au Backend
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       headers: {
@@ -244,6 +246,5 @@ form.addEventListener('submit', event => {
   }
   else {
     alert("Merci de remplir correctement tous les champs")
-    console.log("Echec")
   }
 })
