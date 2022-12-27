@@ -99,7 +99,6 @@ function deleteItem() {
     deleteItem.addEventListener('click', event => {
       const deleted = inLocalStorage.find(element => element.productId == dataId && element.color == dataColor)
       inLocalStorage = inLocalStorage.filter(deleteItem => deleteItem !== deleted)
-
       localStorage.setItem("Products", JSON.stringify(getProductLocalStorage()))
       dataSet.remove()
       priceTotal()
@@ -117,7 +116,6 @@ function priceTotal() {
     sumCart += (product.quantity * product.price)
     totalQuantity += Number(product.quantity)
   }
-
   document.getElementById('totalQuantity').textContent = `${totalQuantity}`
   document.getElementById('totalPrice').textContent = `${sumCart}`
 }
@@ -135,3 +133,117 @@ function getProductLocalStorage() {
   }
   return products
 }
+
+let form = document.querySelector('form')
+
+// Fonction de validation utilisée pour le prénom, le nom et la ville
+
+function validNameOrCity(inputName) {
+  if (/^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ.\s-]+$/i.test(inputName.value)){
+    inputName.nextElementSibling.textContent = 'Saisie valide'
+    return true
+  }
+  else {
+    inputName.nextElementSibling.textContent = 'Saisie invalide'
+    return false
+  }
+}
+
+// Fonction de validation de l'adresse
+
+function validAddress(inputAddress) {
+    if (/^[0-9a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ.\s-]+$/i.test(inputAddress.value)) {
+      inputAddress.nextElementSibling.textContent = 'Saisie valide'
+      return true
+    }
+    else {
+      inputAddress.nextElementSibling.textContent = 'Saisie invalide'
+      return false
+    }
+  }
+
+
+// Fonction de validation de l'email
+
+function validMail(inputEmail) {
+  let mailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g')
+  if (mailRegExp.test(inputEmail.value)) {
+    inputEmail.nextElementSibling.textContent = 'Email valide'
+    return true
+  }
+  else {
+    inputEmail.nextElementSibling.textContent = 'Merci de saisir un email valide'
+    return false
+  }
+}
+
+// On surveille la modification du prénom
+
+form.firstName.addEventListener('input', function() {
+  validNameOrCity(this)
+})
+
+// On surveille la modification du nom
+
+form.lastName.addEventListener('input', function () {
+  validNameOrCity(this)
+})
+
+// On surveille la modification de l'adresse
+
+form.address.addEventListener('input', function () {
+  validAddress(this)
+})
+
+
+// On surveille la modification de la ville
+
+form.city.addEventListener('input', function () {
+  validNameOrCity(this)
+})
+
+// On surveille la modification de l'email
+
+form.email.addEventListener('input', function () {
+  validMail(this)
+})
+
+// On surveille la soumission du formulaire
+form.addEventListener('submit', event => {
+  event.preventDefault()
+  if (inLocalStorage==null || inLocalStorage.length <1) {
+    alert("Vous devez remplir le panier")
+  }
+  else if (validNameOrCity(form.firstName)&&validNameOrCity(form.lastName)&&validAddress(form.address)&&validNameOrCity(form.city)&&validMail(form.email)) {
+    let contact = {
+      firstName: form.firstName.value,
+      lastName: form.lastName.value,
+      address: form.address.value,
+      city: form.city.value,
+      email: form.email.value
+    }
+    let products = inLocalStorage.map(product => product.productId)
+    console.log(products)
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      headers: {
+        'Accept':'application/JSON',
+        'Content-Type':'application/JSON',
+      },
+      body: JSON.stringify({
+        contact,
+        products
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      window.location.href = `./confirmation.html?orderid=${data.orderId}`
+      localStorage.clear()
+    })
+    .catch(error => {console.error(error)})
+  }
+  else {
+    alert("Merci de remplir correctement tous les champs")
+    console.log("Echec")
+  }
+})
