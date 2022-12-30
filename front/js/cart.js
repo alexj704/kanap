@@ -74,8 +74,8 @@ function quantityChange() {
     const dataColor = dataSet.dataset.color
     item.addEventListener('change', function (event) {
       const change = inLocalStorage.find(element => element.productId == dataId && element.color == dataColor)
-      if (event.target.value > 100) {
-        alert("Vous ne pouvez pas prendre plus de 100 produits")
+      if (event.target.value < 1 || event.target.value > 100) {
+        alert("Veuillez sélectionner entre 1 et 100 produits, pour supprimer un produit, cliquez sur Supprimer")
       }
       else {
         change.quantity = Number(event.target.value)
@@ -139,8 +139,8 @@ let form = document.querySelector('form')
 // Fonction de validation utilisée pour le prénom, le nom et la ville
 
 function validNameOrCity(inputName) {
+  inputName.nextElementSibling.textContent = ''
   if (/^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ.\s-]+$/i.test(inputName.value)){
-    inputName.nextElementSibling.textContent = 'Saisie valide'
     return true
   }
   else {
@@ -152,8 +152,8 @@ function validNameOrCity(inputName) {
 // Fonction de validation de l'adresse
 
 function validAddress(inputAddress) {
+    inputAddress.nextElementSibling.textContent = ''
     if (/^[0-9a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ.\s-]+$/i.test(inputAddress.value)) {
-      inputAddress.nextElementSibling.textContent = 'Saisie valide'
       return true
     }
     else {
@@ -167,8 +167,8 @@ function validAddress(inputAddress) {
 
 function validMail(inputEmail) {
   let mailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g')
+  inputEmail.nextElementSibling.textContent = ''
   if (mailRegExp.test(inputEmail.value)) {
-    inputEmail.nextElementSibling.textContent = 'Email valide'
     return true
   }
   else {
@@ -213,7 +213,7 @@ form.addEventListener('submit', event => {
   event.preventDefault()
 // Si le panier est vide, on signale l'erreur
   if (inLocalStorage==null || inLocalStorage.length <1) {
-    alert("Vous devez remplir le panier")
+    alert("Votre panier est vide")
   }
 // Sinon on vérifie si les champs sont correctement remplis
   else if (validNameOrCity(form.firstName)&&validNameOrCity(form.lastName)&&validAddress(form.address)&&validNameOrCity(form.city)&&validMail(form.email)) {

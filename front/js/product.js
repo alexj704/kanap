@@ -40,8 +40,6 @@ fetch(`http://localhost:3000/api/products/${id}`)
     })
     .catch( error => {console.error(error)})
 
-// Ajout au panier
-
 // Ajout du listener sur le bouton "Ajouter au panier", si la quantité ou la couleur n'est pas choisie alors un message d'erreur s'affiche
 
 const addToCart = document.querySelector("#addToCart")
