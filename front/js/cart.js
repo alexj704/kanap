@@ -58,7 +58,7 @@ if (inLocalStorage !== null && inLocalStorage.length > 0) {
       })
 
       .catch(error => { console.error(error) })
-    
+
   }
 
 }
@@ -140,7 +140,7 @@ let form = document.querySelector('form')
 
 function validNameOrCity(inputName) {
   inputName.nextElementSibling.textContent = ''
-  if (/^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ.\s-]+$/i.test(inputName.value)){
+  if (/^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ.\s-]+$/i.test(inputName.value)) {
     return true
   }
   else {
@@ -152,15 +152,15 @@ function validNameOrCity(inputName) {
 // Fonction de validation de l'adresse
 
 function validAddress(inputAddress) {
-    inputAddress.nextElementSibling.textContent = ''
-    if (/^[0-9a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ.\s-]+$/i.test(inputAddress.value)) {
-      return true
-    }
-    else {
-      inputAddress.nextElementSibling.textContent = 'Saisie invalide'
-      return false
-    }
+  inputAddress.nextElementSibling.textContent = ''
+  if (/^[0-9a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ.\s-]+$/i.test(inputAddress.value)) {
+    return true
   }
+  else {
+    inputAddress.nextElementSibling.textContent = 'Saisie invalide'
+    return false
+  }
+}
 
 
 // Fonction de validation de l'email
@@ -179,7 +179,7 @@ function validMail(inputEmail) {
 
 // On surveille la modification du prénom
 
-form.firstName.addEventListener('input', function() {
+form.firstName.addEventListener('input', function () {
   validNameOrCity(this)
 })
 
@@ -211,12 +211,12 @@ form.email.addEventListener('input', function () {
 // On surveille la soumission du formulaire
 form.addEventListener('submit', event => {
   event.preventDefault()
-// Si le panier est vide, on signale l'erreur
-  if (inLocalStorage==null || inLocalStorage.length <1) {
+  // Si le panier est vide, on signale l'erreur
+  if (inLocalStorage == null || inLocalStorage.length < 1) {
     alert("Votre panier est vide")
   }
-// Sinon on vérifie si les champs sont correctement remplis
-  else if (validNameOrCity(form.firstName)&&validNameOrCity(form.lastName)&&validAddress(form.address)&&validNameOrCity(form.city)&&validMail(form.email)) {
+  // Sinon on vérifie si les champs sont correctement remplis
+  else if (validNameOrCity(form.firstName) && validNameOrCity(form.lastName) && validAddress(form.address) && validNameOrCity(form.city) && validMail(form.email)) {
     let contact = {
       firstName: form.firstName.value,
       lastName: form.lastName.value,
@@ -225,24 +225,24 @@ form.addEventListener('submit', event => {
       email: form.email.value
     }
     let products = inLocalStorage.map(product => product.productId)
-// On envoie la commande au Backend
+    // On envoie la commande au Backend
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       headers: {
-        'Accept':'application/JSON',
-        'Content-Type':'application/JSON',
+        'Accept': 'application/JSON',
+        'Content-Type': 'application/JSON',
       },
       body: JSON.stringify({
         contact,
         products
       })
     })
-    .then(response => response.json())
-    .then(data => {
-      window.location.href = `./confirmation.html?orderid=${data.orderId}`
-      localStorage.clear()
-    })
-    .catch(error => {console.error(error)})
+      .then(response => response.json())
+      .then(data => {
+        window.location.href = `./confirmation.html?orderid=${data.orderId}`
+        localStorage.clear()
+      })
+      .catch(error => { console.error(error) })
   }
   else {
     alert("Merci de remplir correctement tous les champs")
