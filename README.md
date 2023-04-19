@@ -1,15 +1,32 @@
-# Kanap #
+# Kanap - Projet OpenClassrooms
 
-This is the front end and back end server for Project 5 of the Web Developer path.
+[![forthebadge](https://forthebadge.com/images/badges/uses-html.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/uses-css.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
 
-### Back end Prerequisites ###
+Projet 5 de la formation Développeur Web d'OpenClassrooms
 
-You will need to have Node and `npm` installed locally on your machine.
+Le but de ce projet est d'implémenter le site de e-commerce Kanap de façon dynamique grâce à JavaScript.
 
-### Back end Installation ###
+## Pour commencer
 
-Clone this repo. From the "back" folder of the project, run `npm install`. You 
-can then run the server with `node server`. 
-The server should run on `localhost` with default port `3000`. If the
-server runs on another port for any reason, this is printed to the
-console when the server starts, e.g. `Listening on port 3001`.
+### Pour lancer le frontend
+
+Vous pouvez utiliser l'extension VSCode LiveServer.
+
+### Pour démarrer le backend
+
+- Se placer dans le dossier back
+- Lancer la commande `npm install` pour installer les dépendances
+- Lancer la commance `node server` pour lancer le backend
+- Par défaut le backend se lance sur le port 3000.
+
+## Fabriqué avec
+
+- Visual Studio Code
+- HTML
+- CSS
+- JavaScript
+
+## Auteurs
+
+- **Alexandre JOIGNANT** _alias_ [@alexj704](https://github.com/alexj704)
